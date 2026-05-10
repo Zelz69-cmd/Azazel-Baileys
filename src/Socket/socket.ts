@@ -943,7 +943,25 @@ export const makeSocket = (config: SocketConfig) => {
 			logger.warn({ err }, 'failed to send initial passive iq')
 		}
 
-		logger.info('opened connection to WA')
+		console.clear()
+
+logger.info(chalk.hex('#ff69b4')(`
+███████╗███████╗██╗
+╚══███╔╝██╔════╝██║
+  ███╔╝ █████╗  ██║
+ ███╔╝  ██╔══╝  ██║
+███████╗███████╗███████╗
+╚══════╝╚══════╝╚══════╝
+
+✦ ZEL SYSTEM ONLINE ✦
+`))
+
+logger.info(chalk.magenta(`
+➤ DEVICE   : NΛILONG XCVI
+➤ CLIENT   : AZAZEL
+➤ STATUS   : CONNECTED
+➤ VERSION  : ∞
+`))
 		clearTimeout(qrTimer) // will never happen in all likelyhood -- but just in case WA sends success on first try
 
 		ev.emit('creds.update', { me: { ...authState.creds.me!, lid: node.attrs.lid } })
