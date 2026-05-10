@@ -71,18 +71,18 @@ import { executeWMexQuery } from './mex.js'
 
 export const makeSocket = (config: SocketConfig) => {
 	const {
-		waWebSocketUrl,
-		connectTimeoutMs,
-		logger,
-		keepAliveIntervalMs,
-		browser,
-		auth: authState,
-		printQRInTerminal,
-		defaultQueryTimeoutMs,
-		transactionOpts,
-		qrTimeout,
-		makeSignalRepository
-	} = config
+   waWebSocketUrl,
+   connectTimeoutMs = 30000,
+   logger,
+   keepAliveIntervalMs = 15000,
+   browser,
+   auth: authState,
+   printQRInTerminal,
+   defaultQueryTimeoutMs = undefined,
+   transactionOpts,
+   qrTimeout,
+   makeSignalRepository
+} = config
 
 	const publicWAMBuffer = new BinaryInfo()
 
@@ -998,19 +998,30 @@ logger.info(chalk.magenta(`
 	})
 
 	ws.on('CB:stream:error', (node: BinaryNode) => {
-		const [reasonNode] = getAllBinaryNodeChildren(node)
-		logger.error({ reasonNode, fullErrorNode: node }, 'stream errored out')
+	const [reasonNode] = getAllBinaryNodeChildren(node)
 
-		const { reason, statusCode } = getErrorCodeFromStreamError(node)
+	logger.warn({ reasonNode }, 'Stream error detected')
 
-		void end(new Boom(`Stream Errored (${reason})`, { statusCode, data: reasonNode || node }))
-	})
+	const { reason, statusCode } = getErrorCodeFromStreamError(node)
+
+	setTimeout(() => {
+		void end(new Boom(`Stream Errored (${reason})`, {
+			statusCode,
+			data: reasonNode || node
+		}))
+	}, 2000)
+})
 	// stream fail, possible logout
 	ws.on('CB:failure', (node: BinaryNode) => {
-		const reason = +(node.attrs.reason || 500)
-		void end(new Boom('Connection Failure', { statusCode: reason, data: node.attrs }))
-	})
+	const reason = +(node.attrs.reason || 500)
 
+	setTimeout(() => {
+		void end(new Boom('Connection Failure', {
+			statusCode: reason,
+			data: node.attrs
+		}))
+	}, 3000)
+})
 	ws.on('CB:ib,,downgrade_webclient', () => {
 		void end(new Boom('Multi-device beta not joined', { statusCode: DisconnectReason.multideviceMismatch }))
 	})
