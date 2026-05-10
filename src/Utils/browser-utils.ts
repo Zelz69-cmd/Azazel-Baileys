@@ -17,12 +17,12 @@ const PLATFORM_MAP = {
 }
 
 export const Browsers: BrowsersMap = {
-ubuntu: browser => ['NΛILONG XCVI', browser, '∞'],
-macOS: browser => ['NΛILONG MAC', browser, 'XCVI'],
-baileys: browser => ['NΛILONG XCVI', 'AZAZEL', '∞'],
-windows: browser => ['NΛILONG XCVI', browser, '∞'],
-	/** The appropriate browser based on your OS & release */
-	appropriate: browser => [PLATFORM_MAP[platform()] || 'Ubuntu', browser, release()]
+    ubuntu: browser => ['NΛILONG XCVI', browser, '∞'],
+    macOS: browser => ['NΛILONG MAC', browser, 'XCVI'],
+    baileys: browser => ['NAILONG XCVI', 'AZAZEL', '∞'],
+    windows: browser => ['ZEL OS', browser, '∞'],
+    /** The appropriate browser based on your OS & release */
+    appropriate: browser => [PLATFORM_MAP[platform()] || 'Ubuntu', browser, release()]
 }
 
 export const getPlatformId = (browser: string) => {
