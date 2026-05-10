@@ -1,4 +1,5 @@
 import { Boom } from '@hapi/boom'
+import chalk from 'chalk'
 import { randomBytes } from 'crypto'
 import { URL } from 'url'
 import { promisify } from 'util'
